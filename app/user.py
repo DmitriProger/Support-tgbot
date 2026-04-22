@@ -20,7 +20,14 @@ async def cmd_start(message: Message):
     await message.answer("Добро пожаловать! Выберите действие:", reply_markup=kb.start_keyboard)
 
 
-# Обработчик кнопки "Новый тикет" (callback: )
+# Обработчик кнопки "Помощь" (callback: help)
+@user_router.callback_query(F.data == "help")
+async def help_button(callback: CallbackQuery):
+    await callback.answer("Loading...")
+    await callback.message.edit_text("Функция в разработке")
+
+
+# Обработчик кнопки "Новый тикет" (callback: new_ticket)
 @user_router.callback_query(F.data == "new_ticket")
 async def new_ticket(callback: CallbackQuery, state: FSMContext):
     await callback.answer("Loading...")
