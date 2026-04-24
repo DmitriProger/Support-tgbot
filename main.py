@@ -8,10 +8,11 @@ from dotenv import load_dotenv
 # Импорт из файлов проекта
 from app.admin import admin_router
 from app.user import user_router
+from database.init import init_db
 
 
-# Основная функция бота
 async def main():
+    # Основная функция бота
     bot = Bot(token=os.getenv("TOKEN"))
     dp = Dispatcher()
     dp.startup.register(start_app)
@@ -22,7 +23,7 @@ async def main():
 
 # startup функция
 async def start_app(dispatcher: Dispatcher):
-    print("Starting app...")
+    await init_db()
 
 
 # shutdown функция

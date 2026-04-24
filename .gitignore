@@ -11,3 +11,4 @@ wheels/
 
 # User ignore
 .env 
+app.db
