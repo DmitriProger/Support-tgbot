@@ -15,3 +15,19 @@ cancel = InlineKeyboardMarkup(
         [InlineKeyboardButton(text="Отмена", callback_data="cancel")],
     ]
 )
+
+# Клавиатура для отмены действия админа
+admin_cancel = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text="Отмена", callback_data="admin_cancel")],
+    ]
+)
+
+
+# Клавиатура для нового топика в админ-группе
+new_topic = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text="Ответить", callback_data="reply_admin")],
+        [InlineKeyboardButton(text="Закрыть тикет", callback_data="close_ticket")],
+    ]
+)

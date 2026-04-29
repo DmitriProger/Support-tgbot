@@ -14,7 +14,8 @@ import app.keyboard as kb
 from app.states import UserReport
 
 # Импорт из других файлов
-from app.topics import send_to_topic, get_or_create_topic
+from app.topics import get_or_create_topic
+from app.admin import send_to_topic
 
 # Инициализация роутера
 user_router = Router()

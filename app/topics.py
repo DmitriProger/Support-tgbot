@@ -12,15 +12,6 @@ async def create_topic(bot: Bot, chat_id, user_id, name):
     return topic.message_thread_id
 
 
-# Функция для отправки сообщения в топик
-async def send_to_topic(bot: Bot, chat_id, thread_id, text):
-    await bot.send_message(
-        chat_id=chat_id,
-        message_thread_id=thread_id,
-        text=text,
-    )
-
-
 # Функция для получения id топика
 async def get_or_create_topic(bot: Bot, chat_id, user_id, name):
     thread_id = await get_topic(user_id)

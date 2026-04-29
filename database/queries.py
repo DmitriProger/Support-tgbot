@@ -22,3 +22,13 @@ async def get_topic(user_id):
         )
         row = await cursor.fetchone()
         return row[0] if row else None
+
+
+# Получение id юзера
+async def get_user_id(thread_id):
+    async with aiosqlite.connect(DB_PATH) as conn:
+        cursor = await conn.execute(
+            "SELECT user_id FROM user_topic WHERE thread_id = ?", (thread_id,)
+        )
+        row = await cursor.fetchone()
+        return row[0]

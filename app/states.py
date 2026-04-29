@@ -5,3 +5,7 @@ from aiogram.fsm.state import State, StatesGroup
 class UserReport(StatesGroup):
     report = State()
     waiting = State()
+
+
+class AdminStates(StatesGroup):
+    reply = State()
