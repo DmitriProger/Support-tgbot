@@ -38,11 +38,12 @@ async def main():
 # startup функция
 async def start_app(dispatcher: Dispatcher):
     await init_db()
+    logger.info("База данных инициализирована")
 
 
 # shutdown функция
 async def shutdown(dispatcher: Dispatcher):
-    print("Shutting down...")
+    logger.info("Бот останавливается")
 
 
 # Старт бота
