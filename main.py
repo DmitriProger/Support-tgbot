@@ -1,5 +1,6 @@
 # Базовые импорты
 import asyncio
+import logging
 import os
 
 from aiogram import Bot, Dispatcher
@@ -11,6 +12,14 @@ from app.admin import admin_router
 from app.user import user_router
 from database.init import init_db
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
+logger = logging.getLogger(__name__)
+
 
 async def main():
     # Основная функция бота
@@ -21,6 +30,8 @@ async def main():
     dp.shutdown.register(shutdown)
     dp["dp"] = dp
     dp.include_routers(user_router, admin_router)
+
+    logger.info("Бот запускается...")
     await dp.start_polling(bot)
 
 
