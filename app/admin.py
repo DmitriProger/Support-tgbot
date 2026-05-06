@@ -1,7 +1,8 @@
 # Стандартные импорты
-from aiogram import Bot, F, Router
+from aiogram import Bot, F, Router, Dispatcher
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
+from aiogram.fsm.storage.base import StorageKey
 from aiogram.types import CallbackQuery, Message
 
 # Импорт клавиатур
@@ -10,6 +11,9 @@ from app.states import AdminStates
 
 # Импорты функций db
 from database.queries import get_user_id
+
+# Импорт states
+from app.states import UserReport
 
 # Инициализация админ роутера
 admin_router = Router()
@@ -38,14 +42,14 @@ async def init_admin_menu(bot: Bot, chat_id, thread_id):
 # Обработчик кнопки "Ответить" (callback: reply_admin)
 @admin_router.callback_query(F.data == "reply_admin")
 async def admin_reply_message(callback: CallbackQuery, state: FSMContext):
-    callback.answer("Loading...")
+    await callback.answer("Loading...")
     await state.set_state(AdminStates.reply)
     await callback.message.edit_text("Отправьте ответ:", reply_markup=kb.admin_cancel)
 
 
 # Обработчик стейта "AdminStates.reply"
 @admin_router.message(AdminStates.reply)
-async def send_to_user(message: Message, state: FSMContext, bot: Bot):
+async def send_to_user(message: Message, state: FSMContext, bot: Bot, dp: Dispatcher):
     await state.update_data(reply=message.text)
     await state.set_state(AdminStates.reply)
 
@@ -56,7 +60,13 @@ async def send_to_user(message: Message, state: FSMContext, bot: Bot):
     # Получение user_id и отправка в переписку с юзером
     thread_id = message.message_thread_id
     user_id = await get_user_id(thread_id)
-    await bot.send_message(chat_id=user_id, text=f"Ответ от админа:\n{admin_text}")
+    await bot.send_message(chat_id=user_id, text=admin_text)
+
+    target_user_id = user_id
+    key = StorageKey(bot_id=bot.id, chat_id=target_user_id, user_id=target_user_id)
+    target_state = FSMContext(storage=dp.storage, key=key)
+
+    await target_state.set_state(UserReport.report)
 
 
 # Обработчик кнопки "Отмена" (callback: cancel)

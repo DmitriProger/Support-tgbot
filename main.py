@@ -3,6 +3,7 @@ import asyncio
 import os
 
 from aiogram import Bot, Dispatcher
+from aiogram.fsm.storage.memory import MemoryStorage
 from dotenv import load_dotenv
 
 # Импорт из файлов проекта
@@ -14,9 +15,11 @@ from database.init import init_db
 async def main():
     # Основная функция бота
     bot = Bot(token=os.getenv("TOKEN"))
-    dp = Dispatcher()
+    storage = MemoryStorage()
+    dp = Dispatcher(storage=storage)
     dp.startup.register(start_app)
     dp.shutdown.register(shutdown)
+    dp["dp"] = dp
     dp.include_routers(user_router, admin_router)
     await dp.start_polling(bot)
 
